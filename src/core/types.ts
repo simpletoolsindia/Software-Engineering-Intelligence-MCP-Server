@@ -125,6 +125,7 @@ export interface FlowStep {
   description: string;
   file: string;
   symbol?: string;
+  snippet?: string;   // RAG: actual code snippet from the file
 }
 
 export interface BugTraceResult {
@@ -141,6 +142,7 @@ export interface BugCause {
   type: 'missing_guard' | 'unsafe_state' | 'race_condition' | 'null_undefined' | 'type_mismatch' | 'logic_error' | 'other';
   file?: string;
   symbol?: string;
+  snippet?: string;   // RAG: actual code near the suspected bug location
 }
 
 // ============================================================================

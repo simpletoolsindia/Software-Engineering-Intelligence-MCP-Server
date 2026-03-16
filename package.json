@@ -1,6 +1,6 @@
 {
   "name": "@simpletoolsindiaorg/engi-mcp",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Software Engineering Intelligence MCP Server — 97% token reduction for Claude Code. 12 tools + 7 resources for scoped file discovery, flow summaries, bug tracing, planning, and multi-session memory.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

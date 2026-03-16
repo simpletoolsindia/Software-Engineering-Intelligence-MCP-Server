@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-03-16
+
+### Added
+- **RAG Engine** (`src/core/rag/rag.ts`) — chunks file content into function/class bodies, scores via TF-IDF term overlap, cached by `lastIndexed`
+- **`RagEngine.retrieve()`** — semantic keyword retrieval across all indexed chunks
+- **`RagEngine.retrieveByLiteral()`** — literal string search (error codes, symbol names) for bug tracing
+- **`FlowStep.snippet`** — RAG-retrieved code snippet attached to each flow step (standard/detailed verbosity)
+- **`BugCause.snippet`** — actual code near the suspected bug location, attached by RAG
+- **Summarizer: RAG-augmented flow summaries** — each step now carries a real code snippet from the file, not just file name + export list
+- **Summarizer: RAG-augmented bug traces** — literal + semantic retrieval finds the exact function containing the bug; cause includes file, symbol, and snippet
+- **Summarizer: RAG-augmented doc context** — code examples pulled from actual file content via semantic search, replacing fragile regex extraction
+
+### Changed
+- `SummarizationEngine.generateFlowSummary` now uses RAG to attach code snippets to steps
+- `SummarizationEngine.traceBug` runs both literal + semantic RAG retrieval; merges results, enriches causes
+- `SummarizationEngine.buildDocContext` uses RAG for example extraction instead of manual regex
+- Audience notes expanded: `api`, `pm`, `qa` cases added to `generateAudienceNote`
+- `FlowStep` and `BugCause` interfaces extended with optional `snippet` field
+
 ## [1.1.1] - 2026-03-16
 
 ### Fixed
