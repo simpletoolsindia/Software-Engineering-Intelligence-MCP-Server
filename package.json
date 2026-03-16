@@ -1,0 +1,70 @@
+{
+  "name": "@simpletoolsindiaorg/engi-mcp",
+  "version": "1.1.0",
+  "description": "Software Engineering Intelligence MCP Server — 97% token reduction for Claude Code. 12 tools + 7 resources for scoped file discovery, flow summaries, bug tracing, planning, and multi-session memory.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "engineering-mcp": "dist/bin.js"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsc && chmod +x dist/bin.js",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "benchmark": "npx tsx test-token-report.ts",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "claude-code",
+    "software-engineering",
+    "intelligence",
+    "token-optimization",
+    "token-reduction",
+    "ai-tools",
+    "code-analysis",
+    "repository-intelligence",
+    "llm-tools",
+    "developer-tools",
+    "typescript"
+  ],
+  "author": {
+    "name": "simpletoolsindia",
+    "email": "support@simpletools.in"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/simpletoolsindia/Software-Engineering-Intelligence-MCP-Server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/simpletoolsindia/Software-Engineering-Intelligence-MCP-Server/issues"
+  },
+  "homepage": "https://github.com/simpletoolsindia/Software-Engineering-Intelligence-MCP-Server#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

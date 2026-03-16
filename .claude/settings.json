@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc -l /Users/sridhar/IdeaProjects/mcp-token/src/**/*.ts)",
+      "Bash(npm test:*)",
+      "Bash(find /Users/sridhar/IdeaProjects/mcp-token/src -name *.ts)",
+      "Bash(npx tsx:*)",
+      "Read(//Users/sridhar/**)",
+      "Bash(python3 -m json.tool)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\({k:v for k,v in d.items\\(\\) if ''''mcp'''' in k.lower\\(\\) or ''''server'''' in k.lower\\(\\)}, indent=2\\)\\)\")",
+      "Bash(find ~ -name *.json -path *claude*)",
+      "Bash(python3 -c \":*)",
+      "Bash(npm pack:*)"
+    ]
+  }
+}

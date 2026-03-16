@@ -1,0 +1,33 @@
+# Source — not needed in published package (dist/ is pre-compiled)
+src/
+test-token-report.ts
+
+# Tests
+**/*.test.ts
+vitest.config.ts
+
+# TypeScript config
+tsconfig.json
+
+# Dev tools
+.vscode/
+.idea/
+.claude/
+
+# Build artifacts we don't want
+dist/**/*.map
+dist/**/*.d.ts.map
+
+# Keep these in dist:
+# dist/**/*.js
+# dist/**/*.d.ts
+
+# Node
+node_modules/
+
+# Misc
+.DS_Store
+*.log
+npm-debug.log*
+.env
+.env.*
