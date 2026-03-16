@@ -18,7 +18,7 @@
 [![MCP Compatible](https://img.shields.io/badge/MCP-compatible-blueviolet?style=flat-square)](https://modelcontextprotocol.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-55%20passing-success?style=flat-square)](src/)
-[![Token Savings](https://img.shields.io/badge/token%20savings-97%25-ff6b35?style=flat-square)](#-proven-token-savings)
+[![Token Savings](https://img.shields.io/badge/token%20savings-96%25-ff6b35?style=flat-square)](#-proven-token-savings)
 
 </div>
 
@@ -31,10 +31,13 @@ Every time Claude Code helps you with a task, it reads files. Lots of them. For 
 **engi-mcp** gives Claude a compact intelligence layer: indexed summaries, scoped file discovery, and compact planning tools. Instead of reading 27 files (18,000 tokens), Claude reads a 350-token summary and gets the same job done.
 
 ```
-WITHOUT engi-mcp:  Claude reads 27 files  →  18,298 tokens
-WITH    engi-mcp:  3 tool calls            →     405 tokens
+WITHOUT engi-mcp:  Claude reads 30 files  →  20,842 tokens
+WITH    engi-mcp:  3 tool calls            →     528 tokens
                                     ─────────────────────────
-                   SAVED: 17,893 tokens  (97.8% reduction)
+                   SAVED: 20,314 tokens  (97.5% reduction)
+
+Combined across 15 real scenarios · 51 files · 2 projects:
+  225,983 tokens  →  8,716 tokens  →  96.1% reduction
 ```
 
 ---
@@ -377,22 +380,78 @@ Resources are read via repo:// URIs — lighter than tools, no arguments needed.
 
 ## Proven Token Savings
 
-Real measurements on this repo (27 files, ~18k tokens):
+Full benchmark run across **two real projects** — 15 scenarios, 51 files, every tool and resource exercised.
 
-| Scenario | Tools Used | Without MCP | With MCP | Saved |
-|----------|-----------|------------|---------|-------|
-| Analysis | 3 | 18,298 | 405 | **97.8%** |
-| Bug Fix | 3 | 18,298 | 734 | **96.0%** |
-| Feature | 5 | 18,298 | 1,117 | **93.9%** |
-| POC | 2 | 18,298 | 128 | **99.3%** |
-| Documentation | 3 | 18,298 | 226 | **98.8%** |
-| Multi-session Memory | 2 | 36,596 | 434 | **98.8%** |
-| All 7 Resources | 7 | 18,298 | 836 | **95.4%** |
-| **TOTAL** | **19/19** | **146,384** | **3,880** | **97.3%** |
+### Test 1 — engi-mcp own repo (30 files · 20,842 token baseline)
 
-Run the benchmark yourself:
+| Scenario | Tools | Without MCP | With MCP | Saved |
+|----------|-------|------------|---------|-------|
+| Analysis | 3 | 20,842 | 528 | **97.5%** |
+| Bug Fix | 3 | 20,842 | 950 | **95.4%** |
+| Feature | 5 | 20,842 | 1,159 | **94.4%** |
+| POC | 2 | 20,842 | 128 | **99.4%** |
+| Documentation | 3 | 20,842 | 443 | **97.9%** |
+| Multi-session Memory | 2 | 41,684 | 422 | **99.0%** |
+| All 7 Resources | 7 | 20,842 | 870 | **95.8%** |
+| **TOTAL** | **19/19** | **166,736** | **4,500** | **97.3%** |
+
+### Test 2 — Sandbox: fresh Node.js REST API (21 files · 6,583 token baseline)
+
+> Project the MCP had never seen before — auth, users, db, notifications, utils.
+
+| Scenario | Tools | Without MCP | With MCP | Saved |
+|----------|-------|------------|---------|-------|
+| Architecture Analysis | 3 | 6,583 | 194 | **97.1%** |
+| Bug Fix | 3 | 6,583 | 866 | **86.8%** |
+| Feature (OAuth2 login) | 5 | 6,583 | 854 | **87.0%** |
+| Refactor (BaseRepo) | 4 | 6,583 | 813 | **87.7%** |
+| POC (Redis rate limit) | 2 | 6,583 | 127 | **98.1%** |
+| Documentation | 3 | 6,583 | 450 | **93.2%** |
+| Multi-session Memory | 2 | 13,166 | 436 | **96.7%** |
+| All 7 Resources | 7 | 6,583 | 476 | **92.8%** |
+| **TOTAL** | **19/19** | **59,247** | **4,216** | **92.9%** |
+
+### Combined across both tests
+
+| | Tokens |
+|--|--------|
+| Without MCP | 225,983 |
+| With MCP | 8,716 |
+| **Saved** | **217,267** |
+| **Net reduction** | **96.1%** |
+
+Total wall time: **103ms** for 15 scenarios. Tool coverage: **19/19 (100%)**.
+
+### Real Cost Savings (Claude API pricing)
+
+> Prices based on Claude Sonnet 4.5 input token rate ($3 / 1M tokens).
+
+| Usage | Without MCP | With MCP | Saved / session |
+|-------|------------|---------|----------------|
+| 10 tasks/day · small repo (6k tok) | ~$0.18 | ~$0.013 | **$0.17** |
+| 10 tasks/day · medium repo (21k tok) | ~$0.63 | ~$0.045 | **$0.58** |
+| 10 tasks/day · large repo (100k tok) | ~$3.00 | ~$0.21 | **$2.79** |
+| 50 tasks/day · large repo | ~$15.00 | ~$1.05 | **$13.95/day** |
+
+At 50 tasks/day on a large repo: **~$418/month saved per developer.**
+The larger the repo, the greater the savings — token cost scales linearly with repo size, MCP cost does not.
+
+### What RAG adds (v1.2.0+)
+
+engi-mcp v1.2.0 added a RAG engine that chunks file content and attaches real code snippets to summaries. The snippets eliminate follow-up file reads that the benchmark does not count:
+
+| Tool | Extra tokens (RAG) | What it replaces |
+|------|--------------------|-----------------|
+| `flow_summarize` | +12 | 1–2 Read calls (~800 tok) |
+| `bug_trace_compact` | +270 | 2–4 Read calls (~2,000 tok) |
+| `doc_context_build` | +212 | 2–3 Read calls (~1,500 tok) |
+
+Run the benchmarks yourself:
 ```bash
+# Clone and run against this repo
 npx tsx test-token-report.ts
+
+# Or against your own project — edit REPO_PATH in test-token-report.ts
 ```
 
 ---

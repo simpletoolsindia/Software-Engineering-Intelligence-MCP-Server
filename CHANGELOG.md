@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-03-16
+
+### Documentation
+- Full benchmark results published: 15 scenarios across 2 real projects (engi-mcp repo + fresh sandbox), 51 files total
+- Combined result: 225,983 → 8,716 tokens · **96.1% reduction**
+- Added real API cost savings table (Claude Sonnet pricing · up to $418/month saved per developer at 50 tasks/day)
+- Updated top-level banner and token-savings badge to reflect v1.2.0 numbers
+
 ## [1.2.0] - 2026-03-16
 
 ### Added
