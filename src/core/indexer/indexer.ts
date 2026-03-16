@@ -250,10 +250,10 @@ export class RepoIndexer {
       }
 
       rx = new RegExp(TS_IMPORT.source, 'g');
-      while ((match = rx.exec(content)) !== null) imports.push(match[2]);
+      while ((match = rx.exec(content)) !== null) { if (match[1]) imports.push(match[1]); }
 
       rx = new RegExp(TS_REQUIRE.source, 'g');
-      while ((match = rx.exec(content)) !== null) imports.push(match[1]);
+      while ((match = rx.exec(content)) !== null) { if (match[1]) imports.push(match[1]); }
 
     } else if (language === 'python') {
       let rx: RegExp, match: RegExpExecArray | null;
@@ -262,7 +262,7 @@ export class RepoIndexer {
       while ((match = rx.exec(content)) !== null) exports.push(match[1]);
 
       rx = new RegExp(PY_IMPORT.source, 'gm');
-      while ((match = rx.exec(content)) !== null) imports.push(match[1] || match[2]);
+      while ((match = rx.exec(content)) !== null) { const m = match[1] || match[2]; if (m) imports.push(m); }
     }
 
     return { exports, imports };
